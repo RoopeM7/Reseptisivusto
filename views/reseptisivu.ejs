@@ -1,13 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fi">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Reseptisivu</title>
+    <title><%= resepti.strMeal %></title>
   </head>
   <body>
-    <p>
-      Tällä sivulla aina näkyy se tietty resepti minkä käyttäjä valitsee/hakee.
-    </p>
+    <h1><%= resepti.strMeal %></h1>
+    <img
+      src="<%= resepti.strMealThumb %>"
+      alt="<%= resepti.strMeal %>"
+      style="width: 300px"
+    />
+
+    <h2>Ainesosat:</h2>
+    <ul>
+      <li><%= resepti.strIngredient1 %>: <%= resepti.strMeasure1 %></li>
+      <li><%= resepti.strIngredient2 %>: <%= resepti.strMeasure2 %></li>
+      <li><%= resepti.strIngredient3 %>: <%= resepti.strMeasure3 %></li>
+      <li><%= resepti.strIngredient4 %>: <%= resepti.strMeasure4 %></li>
+      <li><%= resepti.strIngredient5 %>: <%= resepti.strMeasure5 %></li>
+      <li><%= resepti.strIngredient6 %>: <%= resepti.strMeasure6 %></li>
+      <li><%= resepti.strIngredient7 %>: <%= resepti.strMeasure7 %></li>
+      <li><%= resepti.strIngredient8 %>: <%= resepti.strMeasure8 %></li>
+      <li><%= resepti.strIngredient9 %>: <%= resepti.strMeasure9 %></li>
+      <li><%= resepti.strIngredient10 %>: <%= resepti.strMeasure10 %></li>
+    </ul>
+
+    <h2>Ohje:</h2>
+    <p><%= resepti.strInstructions %></p>
+
+    <a href="/">Takaisin etusivulle</a>
   </body>
 </html>

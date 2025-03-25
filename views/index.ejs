@@ -8,6 +8,24 @@
     <title>Reseptisivusto</title>
   </head>
   <body>
-    <h1>Resepti sivusto</h1>
+    <h1>Kategoriat</h1>
+
+    <ul>
+      <% if (categories && categories.length > 0) { %> <%
+      categories.forEach(function(category) { %>
+      <li>
+        <h2><%= category.strCategory %></h2>
+        <img
+          src="<%= category.strCategoryThumb %>"
+          alt="<%= category.strCategory %>"
+        />
+        <a href="/category/<%= category.strCategory %>"
+          >Näytä <%= category.strCategory %> reseptit</a
+        >
+      </li>
+      <% }); %> <% } else { %>
+      <p>Ei löytynyt kategorioita.</p>
+      <% } %>
+    </ul>
   </body>
 </html>

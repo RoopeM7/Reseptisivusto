@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="fi">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="category.css" />
+    <title><%= categoryName %> Reseptit</title>
+  </head>
+  <body>
+    <h1><%= categoryName %> Reseptit</h1>
+    <ul>
+      <% meals.forEach(function(meal) { %>
+      <li>
+        <h2>
+          <a href="/reseptisivu/<%= meal.idMeal %>"><%= meal.strMeal %></a>
+        </h2>
+        <img src="<%= meal.strMealThumb %>" alt="<%= meal.strMeal %>" />
+      </li>
+      <% }); %>
+    </ul>
+    <a href="/">Takaisin etusivulle</a>
+  </body>
+</html>
