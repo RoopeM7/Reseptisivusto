@@ -3,33 +3,52 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/reseptisivu.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap"
+      rel="stylesheet"
+    />
     <title><%= resepti.strMeal %></title>
   </head>
   <body>
-    <h1><%= resepti.strMeal %></h1>
-    <img
-      src="<%= resepti.strMealThumb %>"
-      alt="<%= resepti.strMeal %>"
-      style="width: 300px"
-    />
+    <div class="header2">
+      <header>
+        <h1><%= resepti.strMeal %></h1>
+      </header>
+    </div>
+    <div class="lepa">
+      <img
+        src="<%= resepti.strMealThumb %>"
+        alt="<%= resepti.strMeal %>"
+        style="width: 300px"
+      />
 
-    <h2>Ainesosat:</h2>
-    <ul>
-      <li><%= resepti.strIngredient1 %>: <%= resepti.strMeasure1 %></li>
-      <li><%= resepti.strIngredient2 %>: <%= resepti.strMeasure2 %></li>
-      <li><%= resepti.strIngredient3 %>: <%= resepti.strMeasure3 %></li>
-      <li><%= resepti.strIngredient4 %>: <%= resepti.strMeasure4 %></li>
-      <li><%= resepti.strIngredient5 %>: <%= resepti.strMeasure5 %></li>
-      <li><%= resepti.strIngredient6 %>: <%= resepti.strMeasure6 %></li>
-      <li><%= resepti.strIngredient7 %>: <%= resepti.strMeasure7 %></li>
-      <li><%= resepti.strIngredient8 %>: <%= resepti.strMeasure8 %></li>
-      <li><%= resepti.strIngredient9 %>: <%= resepti.strMeasure9 %></li>
-      <li><%= resepti.strIngredient10 %>: <%= resepti.strMeasure10 %></li>
-    </ul>
+      <h2>Ainesosat:</h2>
+      <ul>
+        <li><%= resepti.strIngredient1 %>: <%= resepti.strMeasure1 %></li>
+        <li><%= resepti.strIngredient2 %>: <%= resepti.strMeasure2 %></li>
+        <li><%= resepti.strIngredient3 %>: <%= resepti.strMeasure3 %></li>
+        <li><%= resepti.strIngredient4 %>: <%= resepti.strMeasure4 %></li>
+        <li><%= resepti.strIngredient5 %>: <%= resepti.strMeasure5 %></li>
+        <li><%= resepti.strIngredient6 %>: <%= resepti.strMeasure6 %></li>
+        <li><%= resepti.strIngredient7 %>: <%= resepti.strMeasure7 %></li>
+        <li><%= resepti.strIngredient8 %>: <%= resepti.strMeasure8 %></li>
+        <li><%= resepti.strIngredient9 %>: <%= resepti.strMeasure9 %></li>
+        <li><%= resepti.strIngredient10 %>: <%= resepti.strMeasure10 %></li>
+      </ul>
 
-    <h2>Ohje:</h2>
-    <p><%= resepti.strInstructions %></p>
+      <h2>Ohje:</h2>
+      <p><%= resepti.strInstructions %></p>
 
-    <a href="/">Takaisin etusivulle</a>
+      <a href="/">Takaisin etusivulle</a>
+    </div>
   </body>
 </html>

@@ -5,9 +5,9 @@ import path from "path";
 //import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 import { fileURLToPath } from "url";
+import { Console } from "console";
 const port = 3000;
 const host = "localhost";
-
 const app = express();
 app.set("view engine", "ejs");
 const __filename = fileURLToPath(import.meta.url);
@@ -63,6 +63,39 @@ app.get("/reseptisivu/:id", async (req, res) => {
     res.status(500).send("API-haku EPÄONNISTUI!!!");
   }
 });
+
+// haku kohta alkaa
+app.get("/search", async (req, res) => {
+  const searchQuery = req.query.q;
+  try {
+    const response = await fetch(
+      `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`
+    );
+    const data = await response.json();
+    console.log(data);
+    let meals = data.meals;
+
+    const response2 = await fetch(
+      `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchQuery}`
+    );
+    const data2 = await response2.json();
+    console.log(data2);
+    if (!meals) {
+      meals = []; // Jos ei löydy, tyhjennetään taulukko
+    }
+    const meals2 = meals.concat(data2.meals);
+
+    if (meals2 && meals2.length > 0) {
+      res.render("category", { meals: meals2, categoryName: "Hakutulokset" });
+    } else {
+      res.status(404).send("Reseptiä ei löytynyt.");
+    }
+  } catch (error) {
+    console.error("VIRHE HAETTAESSA RESEPTEJÄ HAKUTOIMINNOLLA:", error);
+    res.status(500).send("API-haku EPÄONNISTUI");
+  }
+});
+//haku kohta loppuu tähän
 
 //loppuuu koko js tähän..
 app.listen(port, host, () => {

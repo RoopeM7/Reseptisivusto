@@ -1,0 +1,47 @@
+h1 {
+  color: #333333;
+  text-align: center;
+  font-family: "Playfair Display", sans-serif;
+}
+
+body {
+  background-color: #f7f1e3;
+  margin: 0;
+  padding: 0;
+  line-height: 1.6;
+  justify-content: center;
+  text-align: center;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px auto; /* Keskittää luettelon */
+  max-width: 400px; /* Rajoittaa luettelon leveyttä */
+  text-align: center;
+}
+
+.lepa {
+  font-family: "Lato", sans-serif;
+  flex-direction: column;
+  align-items: center;
+}
+
+.lepa img {
+  padding: 10px;
+}
+
+.header2 {
+  background-color: #708167;
+  text-align: center;
+  padding: 20px;
+}
+
+h2 {
+  color: #333333;
+  margin-top: 5px;
+}
+
+img {
+  max-width: 100px;
+}
