@@ -1,9 +1,56 @@
 h1 {
-  color: blue;
+  color: rgb(0, 0, 0);
+  text-align: center;
+}
+
+body {
+  background-color: #f7f1e3;
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+header {
+  background-color: #708167;
+  text-align: center;
+  padding: 20px;
+}
+
+form {
+  
+}
+
+h2:button {
+  border-radius: 8px;
+  box-shadow: #333333 0px 0px 0.5px;
+}
+.kohta ul {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  list-style: none;
+  padding: 0;
+}
+
+.kohta li {
+  text-align: center;
+  width: 200px;
+}
+
+.kohta img {
+  display: block;
+  margin: 0 auto;
+}
+
+.kohta a {
+  margin-top: 5px;
+  color: #d35400;
+  text-decoration: none;
 }
 
 h2 {
-  color: aqua;
+  color: #333333;
 }
 
 img {
