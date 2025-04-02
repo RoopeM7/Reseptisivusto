@@ -18,7 +18,6 @@
     />
     <title><%= resepti.strMeal %></title>
   </head>
-  <a href="/">Takaisin etusivulle</a>
   <body>
     <div class="header2">
       <header>
@@ -49,7 +48,14 @@
       <h2>Ohje:</h2>
       <p><%= resepti.strInstructions %></p>
 
-      <a href="/">Takaisin etusivulle</a>
+      <a href="/index">Takaisin etusivulle</a>
+      <footer>
+        <footer>
+          <form action="/logout" method="GET">
+            <button type="submit">Kirjaudu ulos</button>
+          </form>
+        </footer>
+      </footer>
     </div>
   </body>
 </html>
