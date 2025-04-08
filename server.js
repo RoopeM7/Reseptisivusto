@@ -54,13 +54,20 @@ app.get("/index", async (req, res) => {
     );
     const data = await response.json();
     const categories = data.categories;
-
-    res.render("index", { categories });
+    res.render("index", { categories, username: req.session.username }); // lisätty username: req.session.username uloskirjautumista varten
   } catch (error) {
     console.error("Virhe haettaessa eri KATEGORIOITA:", error);
     res.status(500).send("API-haku EPÄONNISTUI");
   }
 });
+
+//uloskirjautuminen
+app.get("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/login");
+  });
+});
+//uloskirjautuminen
 
 // REKISTERÖINTI KOHTA!!
 app.get("/register", async (req, res) => {
@@ -175,12 +182,12 @@ app.get("/reseptisivu/:id", async (req, res) => {
   }
 }); //kategoria kohta loppuu
 
-//LOGOUT KOHTA ALKAA
+/*LOGOUT KOHTA ALKAA
 app.get("/logout", (req, res) => {
   req.session.destroy(() => {
     res.redirect("/register");
   });
-}); // LOGOUT KOHTA LOPPUU
+}); */ // LOGOUT KOHTA LOPPUU
 
 // haku kohta alkaa
 app.get("/search", async (req, res) => {
@@ -214,6 +221,31 @@ app.get("/search", async (req, res) => {
   }
 });
 //haku kohta loppuu tähän
+
+//Arvostelujen mahdollistaminen/lisääminen ALKAA TÄSTÄ!!
+app.post("/review", (req, res) => {
+  const { mealId, rating, comment } = req.body;
+  const userId = req.session.user?.id;
+
+  if (!userId) {
+    return res.status(401).json({ message: "Kirjaudu sisään arvostellaksesi" });
+  }
+
+  if (rating < 1 || rating > 5) {
+    return res
+      .status(400)
+      .json({ message: "Arvion täytyy olla välillä 1–5 tähteä" });
+  }
+
+  const query = `INSERT INTO reviews (user_id, mealid, rating, comment) VALUES (?, ?, ?, ?)`;
+  connection.query(query, [userId, mealId, rating, comment], (err, result) => {
+    if (err)
+      return res.status(500).json({ message: "Virhe arvostelua tallentaessa" });
+    res.status(201).json({ message: "Arvostelu tallennettu!" });
+    console.log("Meal ID:", mealId); // Debugggaus!!
+  });
+});
+//ARVOSTELUJEN MAHDOLLISTAMINEN/LISÄÄMINEN LOPPUU TÄHÄN!!
 
 //loppuuu koko js tähän..
 app.listen(port, host, () => {
