@@ -5,7 +5,6 @@ import session from "express-session";
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 import { fileURLToPath } from "url";
-import { Console } from "console";
 const port = 3000;
 const host = "localhost";
 
