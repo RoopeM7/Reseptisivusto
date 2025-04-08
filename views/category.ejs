@@ -17,7 +17,6 @@
       rel="stylesheet"
     />
     <title><%= categoryName %> Reseptit</title>
-    <a href="/">Takaisin etusivulle</a>
   </head>
   <body>
     <div class="kohta2">
@@ -34,7 +33,14 @@
         </li>
         <% }}); %>
       </ul>
-      <a href="/">Takaisin etusivulle</a>
+      <a href="/index">Takaisin etusivulle</a>
+      <footer>
+        <footer>
+          <form action="/logout" method="GET">
+            <button type="submit">Kirjaudu ulos</button>
+          </form>
+        </footer>
+      </footer>
     </div>
   </body>
 </html>

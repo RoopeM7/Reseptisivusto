@@ -36,9 +36,15 @@ app.use(
 );
 // MIDDLEWARE KOHTA LOPPUU
 
-// Alkaa koko Js serverin koodi tästä..
 app.get("/", async (req, res) => {
-  if (!req.session.user_id) {
+  if (!req.session.user) {
+    return res.redirect("/index");
+  }
+});
+
+// Alkaa koko Js serverin koodi tästä..
+app.get("/index", async (req, res) => {
+  if (!req.session.user) {
     // Muistutus Roope, tämä kohta tarkistaa että onko käyttäjä kirjautunut.
     return res.redirect("/register");
   }
@@ -102,7 +108,39 @@ app.post("/register", (req, res) => {
 // login kohta ALKAA
 app.get("/login", (req, res) => {
   res.render("login");
-}); // login kohta loppuu
+});
+
+app.post("/login", (req, res) => {
+  const { username, password } = req.body;
+
+  connection.query(
+    "SELECT * FROM users WHERE username = ?",
+    [username],
+    async (err, results) => {
+      if (err) {
+        console.error("Tietokantavirhe:", err);
+        return res.status(500).send("Virhe kirjautumisessa");
+      }
+
+      if (results.length === 0) {
+        return res.status(400).send("Virheellinen käyttäjänimi tai salasana");
+      }
+
+      const user = results[0];
+
+      // tämä vertaa tieoetokannassa olevaa salasanaa
+      const passwordMatch = await bcrypt.compare(password, user.password_hash);
+
+      if (!passwordMatch) {
+        return res.status(400).send("Virheellinen käyttäjänimi tai salasana");
+      }
+
+      req.session.user = { id: user.id, username: user.username };
+      res.redirect("/index");
+    }
+  );
+});
+// login kohta loppuu
 
 //kategoria kohta
 app.get("/category/:categoryName", async (req, res) => {
@@ -137,12 +175,12 @@ app.get("/reseptisivu/:id", async (req, res) => {
   }
 }); //kategoria kohta loppuu
 
-// LOGOUT KOHTA ALKAA
-// app.get("/logout", (req, res) => {
-// req.session.destroy(() => {
-//  res.redirect("/login");
-// });
-// }); // LOGOUT KOHTA LOPPUU
+//LOGOUT KOHTA ALKAA
+app.get("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/register");
+  });
+}); // LOGOUT KOHTA LOPPUU
 
 // haku kohta alkaa
 app.get("/search", async (req, res) => {

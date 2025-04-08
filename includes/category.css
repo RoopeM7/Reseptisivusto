@@ -2,6 +2,10 @@ img {
   max-width: 100px;
 }
 
+.button {
+  background-color: #d35400;
+}
+
 body {
   background-color: #f7f1e3;
   margin: 0;
@@ -43,7 +47,7 @@ h1 {
 
 .kohta2 a {
   margin-top: 5px;
-  color: rgb(0, 255, 60);
+  color: rgb(0, 0, 0);
   text-decoration: none;
   font-weight: bold;
 }

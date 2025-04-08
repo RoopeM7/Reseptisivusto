@@ -3,6 +3,10 @@ h1 {
   text-align: center;
 }
 
+.button {
+  background-color: #d35400;
+}
+
 body {
   background-color: #f7f1e3;
   font-family: Arial, sans-serif;
@@ -14,10 +18,6 @@ header {
   background-color: #708167;
   text-align: center;
   padding: 20px;
-}
-
-form {
-  
 }
 
 h2:button {

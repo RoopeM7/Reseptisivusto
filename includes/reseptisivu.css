@@ -4,6 +4,14 @@ h1 {
   font-family: "Playfair Display", sans-serif;
 }
 
+.button {
+  border-radius: 8px;
+}
+
+.button:hover {
+  background-color: #d35400;
+}
+
 body {
   background-color: #f7f1e3;
   margin: 0;
