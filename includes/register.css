@@ -1,12 +1,48 @@
+@import url("https://fonts.googleapis.com/css2?family=Caveat&family=Lato:wght@300;400;700&family=Playfair+Display:wght@500;700&display=swap");
+
 body {
-  text-align: center;
-  color: #333333;
+  font-family: "Lato", sans-serif;
   background-color: #f7f1e3;
-  padding-top: 10em;
-  /* box-shadow: white; vain testiksi*/
+  color: #333333;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+
+.rekisteröintikohta {
+  max-width: 420px;
+  margin: 5em auto;
+  background-color: #ffffff;
+  padding: 2.5em;
+  border-radius: 16px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  border: 1px solid #d69d70;
+}
+
+.rekisteröintikohta h2 {
+  font-family: "Playfair Display", serif;
+  color: #d69d70;
+  font-size: 2em;
+  margin-bottom: 1em;
+}
+
+a {
+  color: #d35400;
+  text-decoration: none;
+  font-weight: 600;
 }
 
 button {
-  color: #333333;
+  padding: 0.75em 2em;
   background-color: #d35400;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1em;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #b84300;
 }
