@@ -118,34 +118,29 @@ app.get("/login", (req, res) => {
 });
 
 app.post("/login", (req, res) => {
-  const { username, password } = req.body;
+  const { identifier, password } = req.body;
 
-  connection.query(
-    "SELECT * FROM users WHERE username = ?",
-    [username],
-    async (err, results) => {
-      if (err) {
-        console.error("Tietokantavirhe:", err);
-        return res.status(500).send("Virhe kirjautumisessa");
-      }
-
-      if (results.length === 0) {
-        return res.status(400).send("Virheellinen käyttäjänimi tai salasana");
-      }
-
-      const user = results[0];
-
-      // tämä vertaa tieoetokannassa olevaa salasanaa
-      const passwordMatch = await bcrypt.compare(password, user.password_hash);
-
-      if (!passwordMatch) {
-        return res.status(400).send("Virheellinen käyttäjänimi tai salasana");
-      }
-
-      req.session.user = { id: user.id, username: user.username };
-      res.redirect("/index");
+  const query = "SELECT * FROM users WHERE username = ? OR email = ?";
+  connection.query(query, [identifier, identifier], async (err, results) => {
+    if (err) {
+      console.error("Tietokantavirhe:", err);
+      return res.status(500).send("Virhe kirjautumisessa, yritä uudelleen.");
     }
-  );
+
+    if (results.length === 0) {
+      return res.status(400).send("VIRHEELLINEN käyttäjätunnus tai salasana");
+    }
+
+    const user = results[0];
+    const passwordMatch = await bcrypt.compare(password, user.password_hash);
+
+    if (!passwordMatch) {
+      return res.status(400).send("VIRHEELLINEN käyttäjätunnus tai salasana");
+    }
+
+    req.session.user = { id: user.id, username: user.username };
+    res.redirect("/index");
+  });
 });
 // login kohta loppuu
 
@@ -264,6 +259,8 @@ app.post("/review", (req, res) => {
   if (!userId) {
     return res.status(401).send("Kirjaudu sisään arvostellaksesi.");
   }
+
+  const parsedRating = parseInt(rating);
 
   const parsedRating = parseInt(rating);
 
