@@ -53,3 +53,33 @@ h2 {
 img {
   max-width: 100px;
 }
+
+.reviews-section {
+  margin-top: 2rem;
+  font-family: sans-serif;
+}
+
+.avg-rating {
+  font-size: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+.review-item {
+  border-bottom: 1px solid #ccc;
+  padding: 1rem 0;
+}
+
+.review-item strong {
+  font-weight: bold;
+  display: block;
+}
+
+.stars {
+  color: #f5c518;
+  font-size: 1.2rem;
+}
+
+.review-comment {
+  margin-top: 0.5rem;
+  font-style: italic;
+}

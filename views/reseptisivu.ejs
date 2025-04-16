@@ -48,24 +48,41 @@
       <h2>Ohje:</h2>
       <p><%= resepti.strInstructions %></p>
 
-      <h3>Anna arvostelu:</h3>
       <form action="/review" method="POST">
         <input type="hidden" name="mealId" value="<%= resepti.idMeal %>" />
-        <label for="rating">Rating (1-5):</label>
-        <input
-          type="number"
-          id="rating"
-          name="rating"
-          min="1"
-          max="5"
-          required
-        />
-
-        <label for="comment">Comment:</label>
-        <textarea id="comment" name="comment" required></textarea>
-
-        <button type="submit">Submit Review</button>
+        <label for="rating">Arvosana (1–5):</label>
+        <input type="number" name="rating" min="1" max="5" required />
+        <br />
+        <label for="comment">Kommentti (valinnainen):</label>
+        <textarea name="comment"></textarea>
+        <br />
+        <button type="submit">Lähetä arvostelu</button>
       </form>
+      <div class="reviews-section">
+        <h2>Arvostelut</h2>
+
+        <% if (avgRating) { %>
+        <p class="avg-rating">
+          Keskiarvo: <strong><%= avgRating %></strong> tähteä
+        </p>
+        <% } else { %>
+        <p>Ei vielä arvioitu</p>
+        <% } %> <% if (reviews.length > 0) { %>
+        <ul>
+          <% reviews.forEach(function(review) { %>
+          <li class="review-item">
+            <strong><%= review.username %></strong>
+            <span class="stars"><%= '⭐'.repeat(review.rating) %></span>
+            <% if (review.comment) { %>
+            <p class="review-comment"><%= review.comment %></p>
+            <% } %>
+          </li>
+          <% }); %>
+        </ul>
+        <% } else { %>
+        <p>Ei vielä arvosteluja. Ole ensimmäinen joka arvioi reseptin!</p>
+        <% } %>
+      </div>
 
       <a href="/index">Takaisin etusivulle</a>
       <footer>

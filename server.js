@@ -173,14 +173,48 @@ app.get("/reseptisivu/:id", async (req, res) => {
       `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`
     );
     const data = await response.json();
-    const resepti = data.meals[0]; // [0] avulla tulee ensimmäinen resepti
+    const resepti = data.meals[0];
+    const reviewsQuery = `
+      SELECT reviews.rating, reviews.comment, users.username
+      FROM reviews
+      JOIN users ON reviews.user_id = users.id
+      WHERE reviews.recipe_id = ?
+    `;
 
-    res.render("reseptisivu", { resepti });
+    connection.query(reviewsQuery, [recipeId], (err, reviewRows) => {
+      if (err) {
+        console.error("Virhe arvostelujen haussa:", err);
+        return res.status(500).send("Virhe arvostelujen haussa");
+      }
+
+      const avgQuery = `
+        SELECT AVG(rating) AS avgRating FROM reviews WHERE recipe_id = ?
+      `;
+
+      connection.query(avgQuery, [recipeId], (err, avgRows) => {
+        if (err) {
+          console.error("Virhe keskiarvohaussa:", err);
+          return res.status(500).send("Virhe keskiarvon haussa");
+        }
+
+        const avg = avgRows[0].avgRating;
+        const formattedAvg = avg ? parseFloat(avg).toFixed(1) : null;
+
+        res.render("reseptisivu", {
+          resepti,
+          reviews: reviewRows,
+          avgRating: formattedAvg,
+          user: req.session.user,
+        });
+      });
+    });
   } catch (error) {
-    console.error("VIRHE HAETTAESSA RESEPTEJÄ:", error);
-    res.status(500).send("API-haku EPÄONNISTUI!!!");
+    console.error("VIRHE HAETTAESSA RESEPTIÄ:", error);
+    res.status(500).send("API-haku epäonnistui");
   }
-}); //kategoria kohta loppuu
+});
+
+//kategoria kohta loppuu
 
 /*LOGOUT KOHTA ALKAA
 app.get("/logout", (req, res) => {
@@ -228,21 +262,60 @@ app.post("/review", (req, res) => {
   const userId = req.session.user?.id;
 
   if (!userId) {
-    return res.status(401).json({ message: "Kirjaudu sisään arvostellaksesi" });
+    return res.status(401).send("Kirjaudu sisään arvostellaksesi.");
   }
 
-  if (rating < 1 || rating > 5) {
-    return res
-      .status(400)
-      .json({ message: "Arvion täytyy olla välillä 1–5 tähteä" });
+  const parsedRating = parseInt(rating);
+
+  if (parsedRating < 1 || parsedRating > 5) {
+    return res.status(400).send("Arvion täytyy olla välillä 1–5 tähteä.");
   }
 
-  const query = `INSERT INTO reviews (user_id, mealid, rating, comment) VALUES (?, ?, ?, ?)`;
-  connection.query(query, [userId, mealId, rating, comment], (err, result) => {
-    if (err)
-      return res.status(500).json({ message: "Virhe arvostelua tallentaessa" });
-    res.status(201).json({ message: "Arvostelu tallennettu!" });
-    console.log("Meal ID:", mealId); // Debugggaus!!
+  const insertQuery = `
+    INSERT INTO reviews (user_id, recipe_id, rating, comment)
+    VALUES (?, ?, ?, ?)
+  `;
+
+  connection.query(
+    insertQuery,
+    [userId, mealId, parsedRating, comment],
+    (err, result) => {
+      if (err) {
+        console.error("Virhe arvostelua tallentaessa:", err);
+        return res.status(500).send("Virhe arvostelua tallentaessa.");
+      }
+
+      console.log("Arvostelu tallennettu käyttäjältä:", userId);
+
+      res.redirect(`/reseptisivu/${mealId}`);
+    }
+  );
+});
+
+app.get("/reviews/:mealId", (req, res) => {
+  const mealid = req.params.mealid;
+
+  const arvio = `SELECT user_id, rating, comment, datetime(created, 'localtime') as created FROM reviews WHERE recipe_id = ? ORDER BY created DESC`;
+
+  const keskiarvio = `SELECT ROUND(AVG(rating), 1) as average FROM reviews WHERE recipe_id = ?`;
+
+  connection.query(arvio, [mealid], (err, arvio) => {
+    if (err) {
+      console.error("Arvostelujen hakuvirhe:", err);
+      return res.status(500).json({ message: "Virhe arvostelun haettaessa" });
+    }
+
+    connection.query(keskiarvio, [mealid], (err, keskiarvio) => {
+      if (err) {
+        console.error("Keskiarvion hakuvirhe:", err);
+        return res
+          .status(500)
+          .json({ message: "Virhe keskiarvion haettaessa" });
+      }
+
+      const keskiarvo = keskiarvio[0].average || 0;
+      res.json({ keskiarvo, arvio });
+    });
   });
 });
 //ARVOSTELUJEN MAHDOLLISTAMINEN/LISÄÄMINEN LOPPUU TÄHÄN!!
