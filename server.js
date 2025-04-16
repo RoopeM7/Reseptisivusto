@@ -262,8 +262,6 @@ app.post("/review", (req, res) => {
 
   const parsedRating = parseInt(rating);
 
-  const parsedRating = parseInt(rating);
-
   if (parsedRating < 1 || parsedRating > 5) {
     return res.status(400).send("Arvion täytyy olla välillä 1–5 tähteä.");
   }
