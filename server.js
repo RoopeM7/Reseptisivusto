@@ -5,15 +5,14 @@ import session from "express-session";
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 import { fileURLToPath } from "url";
+import fs from "fs/promises";
 const port = 3000;
 const host = "localhost";
 
-const connection = mysql.createConnection({
-  host: "localhost",
-  user: "root",
-  password: "",
-  database: "reseptisivusto",
-});
+const jsonData = await fs.readFile("./dbconfig.json", "utf-8");
+const dbconfig = JSON.parse(jsonData);
+
+const connection = mysql.createConnection(dbconfig);
 
 const app = express();
 app.set("view engine", "ejs");
