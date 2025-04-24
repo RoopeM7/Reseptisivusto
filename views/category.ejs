@@ -24,6 +24,11 @@
       <header>
         <h1><%= categoryName %> Reseptit</h1>
       </header>
+      <div class="oikea">
+        <form action="/logout" method="GET">
+          <button type="submit" class="tyyli2">Kirjaudu ulos</button>
+        </form>
+      </div>
       <ul>
         <% meals.forEach(function(meal) { if(meal) { %>
         <li>
@@ -35,13 +40,7 @@
         <% }}); %>
       </ul>
       <a href="/index">Takaisin etusivulle</a>
-      <footer>
-        <footer>
-          <form action="/logout" method="GET">
-            <button type="submit">Kirjaudu ulos</button>
-          </form>
-        </footer>
-      </footer>
+      <footer></footer>
     </div>
   </body>
 </html>

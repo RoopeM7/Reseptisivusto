@@ -29,6 +29,19 @@ ul {
   text-align: center;
 }
 
+.oikea2 {
+  text-align: right;
+}
+
+.tyyli3 {
+  background-color: #d35400;
+  color: white;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: "Lato";
+}
+
 .lepa {
   font-family: "Lato", sans-serif;
   flex-direction: column;
@@ -40,7 +53,7 @@ ul {
 }
 
 .header2 {
-  background-color: #708167;
+  background-color: ;
   text-align: center;
   padding: 20px;
 }

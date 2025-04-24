@@ -15,7 +15,7 @@ body {
 }
 
 header {
-  background-color: #708167;
+  background-color: #d69d70;
   text-align: center;
   padding: 20px;
 }
@@ -33,6 +33,25 @@ h2:button {
   padding: 0;
 }
 
+.keskelle {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.keskelle2 {
+  text-align: right;
+}
+
+.tyyli {
+  background-color: #d35400;
+  color: white;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: "Lato";
+}
+
 .kohta li {
   text-align: center;
   width: 200px;
@@ -45,8 +64,11 @@ h2:button {
 
 .kohta a {
   margin-top: 5px;
-  color: #d35400;
+  color: #333333;
   text-decoration: none;
+}
+
+.ylos {
 }
 
 h2 {

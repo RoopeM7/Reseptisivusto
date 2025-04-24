@@ -17,10 +17,17 @@
     <header>
       <h1>Kategoriat</h1>
     </header>
-    <form action="/search" method="get" class="search-form">
-      <input type="text" name="q" placeholder="Hae reseptiä..." required />
-      <button type="submit">Hae</button>
-    </form>
+    <div class="keskelle">
+      <form action="/search" method="get" class="search-form">
+        <input type="text" name="q" placeholder="Hae reseptiä..." required />
+        <button type="submit">Hae</button>
+      </form>
+      <div class="keskelle2">
+        <form action="/logout" method="GET">
+          <button type="submit" class="tyyli">Kirjaudu ulos</button>
+        </form>
+      </div>
+    </div>
     <div class="kohta">
       <ul>
         <% if (categories && categories.length > 0) { %> <%
@@ -39,11 +46,7 @@
         <p>Ei löytynyt kategorioita.</p>
         <% } %>
       </ul>
-      <footer>
-        <form action="/logout" method="GET">
-          <button type="submit">Kirjaudu ulos</button>
-        </form>
-      </footer>
+      <footer></footer>
     </div>
   </body>
 </html>

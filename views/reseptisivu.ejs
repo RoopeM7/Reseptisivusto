@@ -25,6 +25,11 @@
         <h1><%= resepti.strMeal %></h1>
       </header>
     </div>
+    <div class="oikea2">
+      <form action="/logout" method="GET">
+        <button type="submit" class="tyyli3">Kirjaudu ulos</button>
+      </form>
+    </div>
     <div class="lepa">
       <img
         src="<%= resepti.strMealThumb %>"
@@ -87,11 +92,7 @@
 
       <a href="/index">Takaisin etusivulle</a>
       <footer>
-        <footer>
-          <form action="/logout" method="GET">
-            <button type="submit">Kirjaudu ulos</button>
-          </form>
-        </footer>
+        <footer></footer>
       </footer>
     </div>
   </body>
