@@ -138,10 +138,78 @@ app.post("/login", (req, res) => {
     }
 
     req.session.user = { id: user.id, username: user.username };
+    //debuggaus
+    console.log("User session:", req.session.user);
+    //debuggaus
     res.redirect("/index");
   });
 });
 // login kohta loppuu
+
+//Profiili kohta alkaa!!
+app.get("/profile", async (req, res) => {
+  if (!req.session.user) {
+    return res.redirect("/login");
+  }
+
+  try {
+    const userId = req.session.user.id; // tämä määrittää userId:n
+
+    const [users] = await connection
+      .promise()
+      .query("SELECT id, username FROM users WHERE id = ?", [userId]); // eli tämän.
+    const user = users[0];
+    const [rawReviews] = await connection
+      .promise()
+      .query("SELECT * FROM reviews WHERE user_id = ? ORDER BY created DESC", [
+        userId,
+      ]);
+    const reviews = rawReviews.map((review) => ({
+      ...review,
+      recipe_name: review.recipe_name || "Tuntematon resepti",
+      recipe_thumb: review.recipe_thumb || "",
+    }));
+    const updatedReviews = await Promise.all(
+      rawReviews.map(async (review) => {
+        try {
+          const response = await fetch(
+            `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${review.recipe_id}`
+          );
+          const data = await response.json();
+          const recipe = data.meals ? data.meals[0] : null;
+          //DEBUGGAUSTA VARTEN!! ei saa poistaa!! =>
+          if (recipe) {
+            console.log("Recipe found:", recipe.strMeal);
+          } else {
+            console.log("No recipe found for ID:", review.recipe_id);
+          }
+          //<=DEBUGGAUSTA VARTEN
+          return {
+            ...review,
+            recipe_name: recipe ? recipe.strMeal : "Tuntematon resepti",
+            recipe_thumb: recipe ? recipe.strMealThumb : "",
+          };
+        } catch (error) {
+          console.error("Error fetching recipe:", error.message);
+          return {
+            ...review,
+            recipe_name: "Tuntematon resepti",
+            recipe_thumb: "",
+          };
+        }
+      })
+    );
+
+    res.render("profile", { users, reviews: updatedReviews });
+  } catch (error) {
+    console.error("Virhe profiilin luonnissa:", error);
+    res.status(500).send("Jotain meni pieleen...");
+  }
+  process.on("exit", () => {
+    connection.end();
+  });
+});
+//Profiili kohta loppuu!!
 
 //kategoria kohta
 app.get("/category/:categoryName", async (req, res) => {
