@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profiili sivu</title>
+  </head>
+  <nav>
+    <a href="/index">Takaisin etusivulle</a> |
+    <a href="/logout">Kirjaudu ulos</a>
+  </nav>
+  <body>
+    <h1>Profiili</h1>
+    <p>Hei, <strong><%= users.username %></strong>!</p>
+
+    <h2>Arvostelut:</h2>
+    <% if (reviews.length === 0) { %>
+    <p>Sinulla ei ole vielä arvosteluja.</p>
+    <% } else { %>
+    <ul>
+      <% reviews.forEach(function(review) { %>
+      <div class="review">
+        <h3><%= review.recipe_name %></h3>
+        <img
+          src="<%= review.recipe_thumb %>"
+          alt="Recipe Image"
+          style="width: 300px"
+        />
+        <p><%= review.comment %></p>
+        <p><%= review.rating %> stars</p>
+        <p><strong>Julkaisuaika:</strong> <%= review.created %></p>
+      </div>
+      <% }); %>
+    </ul>
+    <% } %>
+  </body>
+</html>

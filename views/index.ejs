@@ -28,6 +28,14 @@
         </form>
       </div>
     </div>
+    <a href="/profile">
+      <button>Siirry profiiliin</button>
+    </a>
+
+    <form action="/search" method="get" class="search-form">
+      <input type="text" name="q" placeholder="Hae reseptiä..." required />
+      <button type="submit">Hae</button>
+    </form>
     <div class="kohta">
       <ul>
         <% if (categories && categories.length > 0) { %> <%
