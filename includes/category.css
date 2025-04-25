@@ -25,7 +25,9 @@ h1 {
 }
 
 .oikea {
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .tyyli2 {

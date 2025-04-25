@@ -30,7 +30,9 @@ ul {
 }
 
 .oikea2 {
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .tyyli3 {
@@ -52,8 +54,15 @@ ul {
   padding: 10px;
 }
 
+.korjaus {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: space-between;
+}
+
 .header2 {
-  background-color: ;
+  background-color: #d69d70;
   text-align: center;
   padding: 20px;
 }

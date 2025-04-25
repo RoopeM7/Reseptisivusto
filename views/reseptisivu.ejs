@@ -26,6 +26,7 @@
       </header>
     </div>
     <div class="oikea2">
+      <a href="/index">Takaisin etusivulle</a>
       <form action="/logout" method="GET">
         <button type="submit" class="tyyli3">Kirjaudu ulos</button>
       </form>
@@ -51,8 +52,10 @@
         <li><%= resepti.strIngredient10 %>: <%= resepti.strMeasure10 %></li>
       </ul>
 
-      <h2>Ohje:</h2>
-      <p><%= resepti.strInstructions %></p>
+      <div class="korjaus">
+        <h2>Ohje:</h2>
+        <p><%= resepti.strInstructions %></p>
+      </div>
 
       <form action="/review" method="POST">
         <input type="hidden" name="mealId" value="<%= resepti.idMeal %>" />
@@ -90,7 +93,6 @@
         <% } %>
       </div>
 
-      <a href="/index">Takaisin etusivulle</a>
       <footer>
         <footer></footer>
       </footer>

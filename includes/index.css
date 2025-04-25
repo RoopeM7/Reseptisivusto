@@ -18,6 +18,7 @@ header {
   background-color: #d69d70;
   text-align: center;
   padding: 20px;
+  font-family: "Playfair Display", serif;
 }
 
 h2:button {
@@ -36,15 +37,40 @@ h2:button {
 .keskelle {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
+  padding: 5px 10px;
+  padding: 0px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
 .keskelle2 {
-  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+}
+
+
+.keskelle2 form:last-child {
+  margin-left: auto;
+}
+
+.keskelle3 {
+}
+
+.tyyli4 {
+  background-color: #d35400;
+  color: white;
+  padding: 10px 15px;
+  margin: 0px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: "Lato";
 }
 
 .tyyli {
   background-color: #d35400;
+  justify-content: space-between;
   color: white;
   padding: 10px 15px;
   text-decoration: none;
