@@ -1,0 +1,19 @@
+@media (max-width: 768px) {
+
+    nav {
+        font-size: 14px;
+    }
+
+    nav a.button {
+        padding: 8px 15px;
+        margin: 0 5px;
+    }
+}
+
+@media (max-width: 480px) {
+    nav a.button {
+        display: block;
+        width: 100%;
+        margin: 5px 0;
+    }
+}

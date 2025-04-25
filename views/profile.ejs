@@ -3,15 +3,16 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="profile.css" />
+    <link rel="stylesheet" href="responsive.css" />
     <title>Profiili sivu</title>
   </head>
   <nav>
-    <a href="/index">Takaisin etusivulle</a> |
-    <a href="/logout">Kirjaudu ulos</a>
+    <a href="/index" class="button">Takaisin etusivulle</a>
+    <a href="/logout" class="button">Kirjaudu ulos</a>
   </nav>
   <body>
     <h1>Profiili</h1>
-    <p>Hei, <strong><%= users.username %></strong>!</p>
 
     <h2>Arvostelut:</h2>
     <% if (reviews.length === 0) { %>
