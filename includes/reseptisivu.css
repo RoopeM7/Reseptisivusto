@@ -10,6 +10,7 @@ h1 {
 
 .button:hover {
   background-color: #d35400;
+  box-shadow: #333333 0px 0px 0.5px;
 }
 
 body {
@@ -44,6 +45,15 @@ ul {
   font-weight: "Lato";
 }
 
+.tyyli5 {
+  background-color: #d35400;
+  color: white;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: "Lato";
+}
+
 .lepa {
   font-family: "Lato", sans-serif;
   flex-direction: column;
@@ -55,10 +65,13 @@ ul {
 }
 
 .korjaus {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  justify-content: space-between;
+  max-width: 800px;
+  margin: 40px auto;
+  background-color: #f7f1e3;
+  padding: 10px;
+  border-radius: 15px;
+  line-height: 1.7;
+  white-space: left;
 }
 
 .header2 {
