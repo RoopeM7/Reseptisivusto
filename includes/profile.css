@@ -1,3 +1,9 @@
+body {
+  background-color: #f7f1e3;
+  margin: 0;
+  padding: 0;
+}
+
 .button {
   background-color: #d35400;
   color: #ffffff;
@@ -9,4 +15,55 @@
 
 .button hover {
   box-shadow: #d35400;
+}
+
+header {
+  text-align: center;
+  color: #333333;
+  background-color: #d69d70;
+  padding: 20px 0;
+}
+
+nav {
+  display: flex;
+  justify-content: left;
+  gap: 1rem;
+  margin-top: 0px; /* tämä PITÄÄ NAPIT HEADERISSA KIINNI EI SAA POISTAA/MUOKKAA!!! */
+  margin-bottom: 10px;
+}
+
+h1,
+h2,
+h3 {
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+.review {
+  background-color: #f7f1e3;
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 20px auto;
+  text-align: center;
+  width: 90%;
+  max-width: 600px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.review img {
+  border-radius: 8px;
+
+  width: 100%;
+  max-width: 400px;
+  height: auto;
+}
+
+.review p strong {
+  color: #d35400;
+  font-weight: bold;
+}
+
+.review p {
+  margin: 0.5rem 0;
 }
