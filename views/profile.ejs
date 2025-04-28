@@ -7,14 +7,15 @@
     <link rel="stylesheet" href="responsive.css" />
     <title>Profiili sivu</title>
   </head>
+  <header>
+    <h1>Profiili</h1>
+  </header>
   <nav>
     <a href="/index" class="button">Takaisin etusivulle</a>
     <a href="/logout" class="button">Kirjaudu ulos</a>
   </nav>
   <body>
-    <h1>Profiili</h1>
-
-    <h2>Arvostelut:</h2>
+    <h3>Profiilin Arvostelut:</h3>
     <% if (reviews.length === 0) { %>
     <p>Sinulla ei ole vielä arvosteluja.</p>
     <% } else { %>
@@ -28,7 +29,7 @@
           style="width: 300px"
         />
         <p><%= review.comment %></p>
-        <p><%= review.rating %> stars</p>
+        <p><%= review.rating %> ⭐</p>
         <p><strong>Julkaisuaika:</strong> <%= review.created %></p>
       </div>
       <% }); %>
