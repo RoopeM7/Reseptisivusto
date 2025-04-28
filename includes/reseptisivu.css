@@ -41,8 +41,10 @@ ul {
   color: white;
   padding: 10px 15px;
   text-decoration: none;
-  border-radius: 5px;
+  border-radius: 8px;
   font-weight: "Lato";
+  border: none;
+  outline: none;
 }
 
 .tyyli5 {
@@ -52,15 +54,17 @@ ul {
   text-decoration: none;
   border-radius: 8px;
   font-weight: "Lato";
+  border: none;
+  outline: none;
 }
 
-.lepa {
+.reviewrecipe {
   font-family: "Lato", sans-serif;
   flex-direction: column;
   align-items: center;
 }
 
-.lepa img {
+.reviewrecipe img {
   padding: 10px;
 }
 

@@ -24,6 +24,15 @@ h1 {
   margin: 0;
 }
 
+.laitappa {
+  background-color: #d35400;
+  color: white;
+  padding: 10px 15px;
+  text-decoration: none;
+  border-radius: 8px;
+  font-weight: "Lato";
+}
+
 .oikea {
   display: flex;
   align-items: center;
@@ -37,6 +46,8 @@ h1 {
   text-decoration: none;
   border-radius: 8px;
   font-weight: "Lato";
+  border: none;
+  outline: none;
 }
 
 .kohta2 ul {
@@ -60,7 +71,7 @@ h1 {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.kohta2 a {
+.kohta2 ul a {
   margin-top: 5px;
   color: rgb(0, 0, 0);
   text-decoration: none;
