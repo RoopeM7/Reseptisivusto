@@ -51,6 +51,24 @@ h3 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.sisalto {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 30px;
+  padding: 30px;
+}
+
+.suosikkiresepti,
+.arvostelu {
+  border-radius: 8px;
+  padding: 1.5rem;
+  margin: 20px auto;
+  text-align: center;
+  width: 90%;
+  max-width: 600px;
+}
+
 .review img {
   border-radius: 8px;
 
