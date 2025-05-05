@@ -22,53 +22,61 @@ body {
   text-align: center;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
-  margin: 20px auto; /* Keskittää luettelon */
-  max-width: 400px; /* Rajoittaa luettelon leveyttä */
-  text-align: center;
-}
-
-.oikea2 {
+.napitreseptisivulla {
   display: flex;
   align-items: center;
-  justify-content: space-between;
 }
 
-.tyyli3 {
+.nappi1reseptisivu {
+  display: inline-flex;
   background-color: #d35400;
-  color: white;
-  padding: 10px 15px;
+  color: #ffffff;
   text-decoration: none;
+  border-style: none;
   border-radius: 8px;
-  font-weight: "Lato";
-  border: none;
-  outline: none;
-}
-
-.tyyli5 {
-  background-color: #d35400;
-  color: white;
-  padding: 10px 15px;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: "Lato";
-  border: none;
-  outline: none;
+  box-shadow: #333333 5px 5px 5px;
+  font-size: medium;
+  padding: 10px 20px;
+  font-family: "Lato", sans-serif;
+  cursor: pointer;
+  display: inline-block;
+  text-align: center;
+  height: 46px;
+  width: 170px; 
+  box-sizing: border-box;
+  margin: 10px;
 }
 
 .reviewrecipe {
   font-family: "Lato", sans-serif;
-  flex-direction: column;
-  align-items: center;
+  display: flex;
+  align-items: center; 
+  gap: 40px; 
+  margin-top: 30px;
+  flex-wrap: wrap; 
+  justify-content: center;
 }
 
-.reviewrecipe img {
-  padding: 10px;
+h2 {
+  text-align: center;
+  font-family: "Lato", sans-serif;
 }
 
-.korjaus {
+.reviewrecipe  ul {
+  text-align: left;
+  display: block;
+  list-style: none;
+  padding: 0;
+  max-width: 300px; 
+  text-align: center;
+  min-width: 300px;
+}
+
+.tekstityylireseptisivu {
+  font-family: "Lato", sans-serif;
+}
+
+.ohjereseptiin {
   max-width: 800px;
   margin: 40px auto;
   background-color: #f7f1e3;
@@ -76,9 +84,11 @@ ul {
   border-radius: 15px;
   line-height: 1.7;
   white-space: left;
+  font-family: "Lato", sans-serif;
+  text-align: center;
 }
 
-.header2 {
+.navireseptisivu {
   background-color: #d69d70;
   text-align: center;
   padding: 20px;
@@ -90,12 +100,17 @@ h2 {
 }
 
 img {
-  max-width: 100px;
+  max-width: 300px;
+  height: auto;
+  margin: 10px 0 20px 0px;
+  gap: 20px;
+  min-width: 200px;
 }
 
 .reviews-section {
   margin-top: 2rem;
   font-family: sans-serif;
+  
 }
 
 .avg-rating {
@@ -106,6 +121,7 @@ img {
 .review-item {
   border-bottom: 1px solid #ccc;
   padding: 1rem 0;
+  list-style: none;
 }
 
 .review-item strong {

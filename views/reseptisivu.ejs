@@ -21,15 +21,15 @@
     <link rel="icon" type="image/png" href="/kuvat/reseptiguru-logo.ico" />
   </head>
   <body>
-    <div class="header2">
+    <div class="navireseptisivu">
       <header>
         <h1><%= resepti.strMeal %></h1>
       </header>
     </div>
-    <div class="oikea2">
-      <a href="/index" class="tyyli5">Takaisin etusivulle</a>
+    <div class="napitreseptisivulla">
+      <a href="/index" class="nappi1reseptisivu">Takaisin etusivulle</a>
       <form action="/logout" method="GET">
-        <button type="submit" class="tyyli3">Kirjaudu ulos</button>
+        <button type="submit" class="nappi1reseptisivu">Kirjaudu ulos</button>
       </form>
     </div>
     <div class="reviewrecipe">
@@ -38,9 +38,9 @@
         alt="<%= resepti.strMeal %>"
         style="width: 300px"
       />
-
-      <h2>Ainesosat:</h2>
+      
       <ul>
+        <h2>Aineosat:</h2>
         <li><%= resepti.strIngredient1 %>: <%= resepti.strMeasure1 %></li>
         <li><%= resepti.strIngredient2 %>: <%= resepti.strMeasure2 %></li>
         <li><%= resepti.strIngredient3 %>: <%= resepti.strMeasure3 %></li>
@@ -52,18 +52,19 @@
         <li><%= resepti.strIngredient9 %>: <%= resepti.strMeasure9 %></li>
         <li><%= resepti.strIngredient10 %>: <%= resepti.strMeasure10 %></li>
       </ul>
+      </div>
 
-      <div class="korjaus">
+      <div class="ohjereseptiin">
         <h2>Ohje:</h2>
         <p><%= resepti.strInstructions %></p>
       </div>
 
       <form action="/review" method="POST">
         <input type="hidden" name="mealId" value="<%= resepti.idMeal %>" />
-        <label for="rating">Arvosana (1–5):</label>
+        <label for="rating" class="tekstityylireseptisivu">Arvosana (1–5):</label>
         <input type="number" name="rating" min="1" max="5" required />
         <br />
-        <label for="comment">Kommentti (valinnainen):</label>
+        <label for="comment" class="tekstityylireseptisivu">Kommentti (valinnainen):</label>
         <textarea name="comment"></textarea>
         <br />
         <button type="submit">Lähetä arvostelu</button>

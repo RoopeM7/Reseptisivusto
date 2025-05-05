@@ -25,7 +25,7 @@ h2:button {
   border-radius: 8px;
   box-shadow: #333333 0px 0px 0.5px;
 }
-.kohta ul {
+.ruokavaihtoehdot ul {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -34,58 +34,42 @@ h2:button {
   padding: 0;
 }
 
-.keskelle {
-  display: flex;
-  flex-direction: row;
-  padding: 5px 10px;
-  padding: 0px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
-.keskelle2 {
+.napitindexsivulla {
   display: flex;
   align-items: center;
   justify-content: space-between; 
 }
 
 
-.keskelle2 form:last-child {
+.napitindexsivulla form:last-child {
   margin-left: auto;
 }
 
-.tyyli4 {
+.nappi1index {
   background-color: #d35400;
-  color: white;
-  padding: 10px 15px;
-  margin: 0px;
+  color: #ffffff;
   text-decoration: none;
+  border-style: none;
   border-radius: 8px;
-  font-weight: "Lato";
+  box-shadow: #333333 5px 5px 5px;
+  font-size: medium;
+  padding: 10px 20px;
+  font-family: "Lato", sans-serif;
+  cursor: pointer;
+  margin: 10px;
 }
 
-.tyyli {
-  background-color: #d35400;
-  justify-content: space-between;
-  color: white;
-  padding: 10px 15px;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: "Lato";
-}
-
-.kohta li {
+.ruokavaihtoehdot li {
   text-align: center;
   width: 200px;
 }
 
-.kohta img {
+.ruokavaihtoehdot img {
   display: block;
   margin: 0 auto;
 }
 
-.kohta a {
+.ruokavaihtoehdot a {
   margin-top: 5px;
   color: #333333;
   text-decoration: none;

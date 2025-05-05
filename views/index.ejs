@@ -18,12 +18,12 @@
     <header>
       <h1>Etusivu</h1>
     </header>
-      <div class="keskelle2">
+      <div class="napitindexsivulla">
         <a href="/profile">
-          <button class="tyyli4">Siirry profiiliin</button>
+          <button class="nappi1index">Siirry profiiliin</button>
         </a>
         <form action="/logout" method="GET">
-          <button type="submit" class="tyyli">Kirjaudu ulos</button>
+          <button type="submit" class="nappi1index">Kirjaudu ulos</button>
         </form>
         <form action="/search" method="get" class="search-form">
           <input type="text" name="q" placeholder="Hae reseptiä..." required />
@@ -31,7 +31,7 @@
         </form>
       </div>
     </div>
-    <div class="kohta">
+    <div class="ruokavaihtoehdot">
       <ul>
         <% if (categories && categories.length > 0) { %> <%
         categories.forEach(function(category) { %>

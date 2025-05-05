@@ -24,33 +24,25 @@ h1 {
   margin: 0;
 }
 
-.laitappa {
+.nappi1kategoria {
   background-color: #d35400;
-  color: white;
-  padding: 10px 15px;
+  color: #ffffff;
   text-decoration: none;
+  border-style: none;
   border-radius: 8px;
-  font-weight: "Lato";
+  box-shadow: #333333 5px 5px 5px;
+  font-size: medium;
+  padding: 10px 20px;
+  font-family: "Lato", sans-serif;
+  cursor: pointer;
+  margin: 10px;
 }
 
-.oikea {
+.napitkategoria {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 
-.tyyli2 {
-  background-color: #d35400;
-  color: white;
-  padding: 10px 15px;
-  text-decoration: none;
-  border-radius: 8px;
-  font-weight: "Lato";
-  border: none;
-  outline: none;
-}
-
-.kohta2 ul {
+.kokonainenkategoria ul {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -60,7 +52,7 @@ h1 {
   margin: 20px 0;
 }
 
-.kohta2 li {
+.kokonainenkategoria li {
   width: 400px;
   font-family: "Lato", sans-serif;
   display: flex;
@@ -71,7 +63,7 @@ h1 {
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.kohta2 ul a {
+.kokonainenkategoria ul a {
   margin-top: 5px;
   color: rgb(0, 0, 0);
   text-decoration: none;
