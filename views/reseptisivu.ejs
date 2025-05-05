@@ -41,16 +41,11 @@
 
       <h2>Ainesosat:</h2>
       <ul>
-        <li><%= resepti.strIngredient1 %>: <%= resepti.strMeasure1 %></li>
-        <li><%= resepti.strIngredient2 %>: <%= resepti.strMeasure2 %></li>
-        <li><%= resepti.strIngredient3 %>: <%= resepti.strMeasure3 %></li>
-        <li><%= resepti.strIngredient4 %>: <%= resepti.strMeasure4 %></li>
-        <li><%= resepti.strIngredient5 %>: <%= resepti.strMeasure5 %></li>
-        <li><%= resepti.strIngredient6 %>: <%= resepti.strMeasure6 %></li>
-        <li><%= resepti.strIngredient7 %>: <%= resepti.strMeasure7 %></li>
-        <li><%= resepti.strIngredient8 %>: <%= resepti.strMeasure8 %></li>
-        <li><%= resepti.strIngredient9 %>: <%= resepti.strMeasure9 %></li>
-        <li><%= resepti.strIngredient10 %>: <%= resepti.strMeasure10 %></li>
+        <% for (let i = 1; i <= 20; i++) { let ainesosa =
+        resepti[`strIngredient${i}`]; let maara = resepti[`strMeasure${i}`]; if
+        (ainesosa && ainesosa.trim()) { %>
+        <li><%= ainesosa %>: <%= maara %></li>
+        <% } } %>
       </ul>
 
       <div class="korjaus">
@@ -58,16 +53,29 @@
         <p><%= resepti.strInstructions %></p>
       </div>
 
-      <form action="/review" method="POST">
-        <input type="hidden" name="mealId" value="<%= resepti.idMeal %>" />
-        <label for="rating">Arvosana (1–5):</label>
-        <input type="number" name="rating" min="1" max="5" required />
-        <br />
-        <label for="comment">Kommentti (valinnainen):</label>
-        <textarea name="comment"></textarea>
-        <br />
-        <button type="submit">Lähetä arvostelu</button>
-      </form>
+      <div class="alkuperainenlahde">
+        <h2>Linkki alkuperäiseen lähteeseen:</h2>
+        <a
+          href="https://www.themealdb.com/meal/<%= resepti.idMeal %>"
+          target="_blank"
+        >
+          Katso resepti tästä
+        </a>
+      </div>
+
+      <div class="arvostelukohta">
+        <h2>Arvostele resepti</h2>
+        <form action="/review" method="POST">
+          <input type="hidden" name="mealId" value="<%= resepti.idMeal %>" />
+          <label for="rating">Arvosana (1–5):</label>
+          <input type="number" name="rating" min="1" max="5" required />
+          <br />
+          <label for="comment">Kommentti (valinnainen):</label>
+          <textarea name="comment"></textarea>
+          <br />
+          <button type="submit">Lähetä arvostelu</button>
+        </form>
+      </div>
       <div class="reviews-section">
         <h2>Arvostelut</h2>
 

@@ -32,14 +32,17 @@
         </form>
       </div>
       <ul>
-        <% meals.forEach(function(meal) { if(meal) { %>
+        <% if (meals && Array.isArray(meals)) { %> <%
+        meals.forEach(function(meal) { if(meal) { %>
         <li>
           <h2>
             <a href="/reseptisivu/<%= meal.idMeal %>"><%= meal.strMeal %></a>
           </h2>
           <img src="<%= meal.strMealThumb %>" alt="<%= meal.strMeal %>" />
         </li>
-        <% }}); %>
+        <% }}); %> <% } else { %>
+        <li>Ei löytynyt reseptejä tähän kategoriaan.</li>
+        <% } %>
       </ul>
     </div>
   </body>

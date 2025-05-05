@@ -15,25 +15,46 @@
     <a href="/logout" class="button">Kirjaudu ulos</a>
   </nav>
   <body>
-    <h3>Profiilin Arvostelut:</h3>
-    <% if (reviews.length === 0) { %>
-    <p>Sinulla ei ole vielä arvosteluja.</p>
-    <% } else { %>
-    <ul>
-      <% reviews.forEach(function(review) { %>
-      <div class="review">
-        <h3><%= review.recipe_name %></h3>
-        <img
-          src="<%= review.recipe_thumb %>"
-          alt="Recipe Image"
-          style="width: 300px"
-        />
-        <p><%= review.comment %></p>
-        <p><%= review.rating %> ⭐</p>
-        <p><strong>Julkaisuaika:</strong> <%= review.created %></p>
-      </div>
-      <% }); %>
-    </ul>
-    <% } %>
+    <div class="sisalto">
+    <div class="arvostelu">
+      <h3>Profiilin Arvostelut:</h3>
+      <% if (reviews.length === 0) { %>
+      <p>Sinulla ei ole vielä arvosteluja.</p>
+      <% } else { %>
+      <ul>
+        <% reviews.forEach(function(review) { %>
+        <div class="review">
+          <h3><%= review.recipe_name %></h3>
+          <img
+            src="<%= review.recipe_thumb %>"
+            alt="Recipe Image"
+            style="width: 300px"
+          />
+          <p><%= review.comment %></p>
+          <p><%= '⭐'.repeat(review.rating) %></p>
+          <p><strong>Julkaisuaika:</strong> <%= review.created %></p>
+        </div>
+        <% }); %>
+      </ul>
+      <% } %>
+    </div>
+    <div class="suosikkiresepti">
+      <h3>Suosikkireseptisi:</h3>
+      <% if (favorites.length === 0) { %>
+        <p>Ei suosikkireseptejä vielä.</p>
+      <% } else { %>
+        <% favorites.forEach(function(fav) { %>
+          <div class="review">
+            <h3><%= fav.recipe_name %></h3>
+            <img src="<%= fav.recipe_thumb %>" alt="Favorite Recipe Image" style="width: 300px" />
+            <p><%= fav.comment %></p>
+            <p><%= '⭐'.repeat(fav.rating) %></p>
+            <p><strong>Julkaisuaika:</strong> <%= fav.created %></p>
+          </div>
+        <% }); %>
+      <% } %>
+    </div>
+  </div>
+</div>
   </body>
 </html>

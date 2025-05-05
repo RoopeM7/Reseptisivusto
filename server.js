@@ -164,6 +164,39 @@ app.get("/profile", async (req, res) => {
       .query("SELECT * FROM reviews WHERE user_id = ? ORDER BY created DESC", [
         userId,
       ]);
+    //Suosikki kohta reseptisivulla
+    // Hae suosikit eli arvostelut, joissa rating >= 4
+    const [rawFavorites] = await connection
+      .promise()
+      .query(
+        "SELECT * FROM reviews WHERE user_id = ? AND rating >= 4 ORDER BY created DESC",
+        [userId]
+      );
+
+    const favoriteReviews = await Promise.all(
+      rawFavorites.map(async (review) => {
+        try {
+          const response = await fetch(
+            `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${review.recipe_id}`
+          );
+          const data = await response.json();
+          const recipe = data.meals ? data.meals[0] : null;
+
+          return {
+            ...review,
+            recipe_name: recipe ? recipe.strMeal : "Tuntematon resepti",
+            recipe_thumb: recipe ? recipe.strMealThumb : "",
+          };
+        } catch (error) {
+          console.error("Error fetching favorite recipe:", error.message);
+          return {
+            ...review,
+            recipe_name: "Tuntematon resepti",
+            recipe_thumb: "",
+          };
+        }
+      })
+    );
     const reviews = rawReviews.map((review) => ({
       ...review,
       recipe_name: review.recipe_name || "Tuntematon resepti",
@@ -179,9 +212,9 @@ app.get("/profile", async (req, res) => {
           const recipe = data.meals ? data.meals[0] : null;
           //DEBUGGAUSTA VARTEN!! ei saa poistaa!! =>
           if (recipe) {
-            console.log("Recipe found:", recipe.strMeal);
+            console.log("Resepti löytyi:", recipe.strMeal);
           } else {
-            console.log("No recipe found for ID:", review.recipe_id);
+            console.log("Reseptiä ei löytynyt ID:llä:", review.recipe_id);
           }
           //<=DEBUGGAUSTA VARTEN
           return {
@@ -200,7 +233,11 @@ app.get("/profile", async (req, res) => {
       })
     );
 
-    res.render("profile", { users, reviews: updatedReviews });
+    res.render("profile", {
+      users,
+      reviews: updatedReviews,
+      favorites: favoriteReviews,
+    });
   } catch (error) {
     console.error("Virhe profiilin luonnissa:", error);
     res.status(500).send("Jotain meni pieleen...");
@@ -293,16 +330,15 @@ app.get("/search", async (req, res) => {
       `https://www.themealdb.com/api/json/v1/1/search.php?s=${searchQuery}`
     );
     const data = await response.json();
-    console.log(data);
     let meals = data.meals;
 
     const response2 = await fetch(
       `https://www.themealdb.com/api/json/v1/1/filter.php?i=${searchQuery}`
     );
     const data2 = await response2.json();
-    console.log(data2);
+
     if (!meals) {
-      meals = []; // Jos ei löydy, tyhjennetään taulukko
+      meals = [];
     }
     const meals2 = meals.concat(data2.meals);
 
@@ -316,7 +352,7 @@ app.get("/search", async (req, res) => {
     res.status(500).send("API-haku EPÄONNISTUI");
   }
 });
-//haku kohta loppuu tähän
+// haku kohta loppuu tähän
 
 //Arvostelujen mahdollistaminen/lisääminen ALKAA TÄSTÄ!!
 app.post("/review", (req, res) => {
