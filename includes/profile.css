@@ -2,6 +2,7 @@ body {
   background-color: #f7f1e3;
   margin: 0;
   padding: 0;
+  font-family: "Lato", sans-serif;
 }
 
 .button {
@@ -38,6 +39,7 @@ h3 {
   text-align: center;
   margin: 0;
   padding: 0;
+  font-family: "Playfair Display", serif;
 }
 
 .review {
@@ -57,6 +59,7 @@ h3 {
   align-items: flex-start;
   gap: 30px;
   padding: 30px;
+  color: #333333;
 }
 
 .suosikkiresepti,
@@ -67,6 +70,7 @@ h3 {
   text-align: center;
   width: 90%;
   max-width: 600px;
+  font-family: "Lato", sans-serif;
 }
 
 .review img {
@@ -80,6 +84,7 @@ h3 {
 .review p strong {
   color: #d35400;
   font-weight: bold;
+  font-family: "Lato", sans-serif;
 }
 
 .review p {
