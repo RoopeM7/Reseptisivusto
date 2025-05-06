@@ -1,5 +1,6 @@
 img {
   max-width: 100px;
+  box-shadow: #333333 0px 0px 5px;
 }
 
 .button {
