@@ -53,10 +53,6 @@ h3 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-.review img {
-  box-shadow: #333333 0px 0px 5px;
-}
-
 .sisalto {
   display: flex;
   flex-wrap: wrap; /* TÄRKEÄ */
@@ -78,7 +74,7 @@ h3 {
 
 .review img {
   border-radius: 8px;
-
+  box-shadow: #333333 0px 0px 5px;
   width: 100%;
   max-width: 400px;
   height: auto;

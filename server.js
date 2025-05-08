@@ -532,7 +532,7 @@ app.post("/poista-suosikista", async (req, res) => {
   const userId = req.session.user.id;
 
   try {
-    // Päivittää `is_favorite` kenttän jotta se ei enää näy profiili sivulla!!
+    // TÄMÄ Päivittää `is_favorite` kenttän jotta se ei enää näy profiili sivulla!!
     await connection
       .promise()
       .query(

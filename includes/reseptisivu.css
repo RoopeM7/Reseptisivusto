@@ -110,10 +110,10 @@ img {
 }
 
 .arvostelukohta {
-  padding: 20px; 
+  padding: 20px;
   border-radius: 8px;
-  max-width: 600px; 
-  margin: 20px auto; 
+  max-width: 600px;
+  margin: 20px auto;
 }
 
 .arvostelukohta input {
@@ -176,4 +176,18 @@ img {
 .review-comment {
   margin-top: 0.5rem;
   font-style: italic;
+}
+
+.Lisaasuosikiksi button {
+  display: inline-flex;
+  background-color: #d35400;
+  color: #ffffff;
+  text-decoration: none;
+  border-style: none;
+  border-radius: 8px;
+  box-shadow: #333333 5px 5px 5px;
+  font-size: medium;
+  padding: 10px 10px;
+  font-family: "Lato", sans-serif;
+  cursor: pointer;
 }

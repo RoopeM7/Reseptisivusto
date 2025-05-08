@@ -17,6 +17,7 @@
     </nav>
 
     <div class="sisalto">
+      <!--Arvostelu kohta!!-->
       <div class="arvostelu">
         <h3>Profiilin Arvostelut:</h3>
         <% if (reviews.length === 0) { %>
@@ -35,7 +36,6 @@
             <p><%= '⭐'.repeat(review.rating) %></p>
             <p><strong>Julkaisuaika:</strong> <%= review.created %></p>
 
-            <!-- Poistonappi siirretty tähän -->
             <form action="/poista-arvostelu" method="POST">
               <input type="hidden" name="reviewId" value="<%= review.id %>" />
               <button
@@ -51,7 +51,7 @@
         <% } %>
       </div>
 
-      <!-- Suosikkireseptit -->
+      <!-- Suosikkireseptit kohta!! -->
       <div class="suosikkiresepti">
         <h3>Suosikkireseptisi:</h3>
         <% if (favorites.length === 0) { %>
@@ -67,7 +67,6 @@
               style="width: 300px"
             />
 
-            <!-- Poista suosikeista -->
             <form action="/poista-suosikista" method="POST">
               <input
                 type="hidden"

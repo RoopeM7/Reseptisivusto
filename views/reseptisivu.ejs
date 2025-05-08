@@ -66,15 +66,16 @@
         </form>
       </div>
 
-      <!-- "Lisää suosikiksi" nappi -->
+       <div class="Lisaasuosikiksi">
       <form method="POST" action="/lisaa-suosikiksi">
         <input type="hidden" name="recipeId" value="<%= resepti.idMeal %>">
         <% if (isFavorite) { %>
           <button type="submit" disabled>Resepti on jo suosikki</button>
         <% } else { %>
-          <button type="submit">Lisää suosikiksi</button>
+          <button type="submit">Lisää resepti suosikiksi</button>
         <% } %>
       </form>
+    </div>
 
       <div class="reviews-section">
         <h2>Arvostelut</h2>
