@@ -65,6 +65,17 @@
           <button type="submit">Lähetä arvostelu</button>
         </form>
       </div>
+
+      <!-- "Lisää suosikiksi" nappi -->
+      <form method="POST" action="/lisaa-suosikiksi">
+        <input type="hidden" name="recipeId" value="<%= resepti.idMeal %>">
+        <% if (isFavorite) { %>
+          <button type="submit" disabled>Resepti on jo suosikki</button>
+        <% } else { %>
+          <button type="submit">Lisää suosikiksi</button>
+        <% } %>
+      </form>
+
       <div class="reviews-section">
         <h2>Arvostelut</h2>
 
@@ -74,7 +85,8 @@
         </p>
         <% } else { %>
         <p>Ei vielä arvioitu</p>
-        <% } %> <% if (reviews.length > 0) { %>
+        <% } %> 
+        <% if (reviews.length > 0) { %>
         <ul>
           <% reviews.forEach(function(review) { %>
           <li class="review-item">
