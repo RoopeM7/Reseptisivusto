@@ -41,6 +41,28 @@ h2:button {
   justify-content: space-between;
 }
 
+.napitindexsivulla input {
+    height: 35px;
+    font-size: 16px;
+    padding: 0 10px;
+    box-sizing: border-box;
+    border-radius: 4px;
+}
+
+.napitindexsivulla button {
+  background-color: #d35400;
+  color: #ffffff;
+  text-decoration: none;
+  border-style: none;
+  border-radius: 8px;
+  box-shadow: #333333 5px 5px 5px;
+  font-size: medium;
+  padding: 10px 20px;
+  font-family: "Lato", sans-serif;
+  cursor: pointer;
+  margin: 10px;
+}
+
 .napitindexsivulla form:last-child {
   margin-left: auto;
 }

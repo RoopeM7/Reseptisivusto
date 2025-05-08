@@ -26,6 +26,21 @@ body {
   margin-bottom: 1em;
 }
 
+.kirjauduppa label {
+  width: auto;
+  margin-right: 10px;
+  display: block;
+  margin-top: 5px;
+}
+
+.kirjauduppa input {
+  top: 0;
+  left: 0;
+  width: 50%;
+  margin: 0 auto;
+  text-align: center;
+}
+
 a {
   color: #d35400;
   text-decoration: none;
