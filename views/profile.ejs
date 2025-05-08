@@ -7,54 +7,85 @@
     <link rel="stylesheet" href="responsive.css" />
     <title>Profiili sivu</title>
   </head>
-  <header>
-    <h1>Profiili</h1>
-  </header>
-  <nav>
-    <a href="/index" class="button">Takaisin etusivulle</a>
-    <a href="/logout" class="button">Kirjaudu ulos</a>
-  </nav>
   <body>
+    <header>
+      <h1>Profiili</h1>
+    </header>
+    <nav>
+      <a href="/index" class="button">Takaisin etusivulle</a>
+      <a href="/logout" class="button">Kirjaudu ulos</a>
+    </nav>
+
     <div class="sisalto">
-    <div class="arvostelu">
-      <h3>Profiilin Arvostelut:</h3>
-      <% if (reviews.length === 0) { %>
-      <p>Sinulla ei ole vielä arvosteluja.</p>
-      <% } else { %>
-      <ul>
-        <% reviews.forEach(function(review) { %>
-        <div class="review">
-          <h3><%= review.recipe_name %></h3>
-          <img
-            src="<%= review.recipe_thumb %>"
-            alt="Recipe Image"
-            style="width: 300px"
-          />
-          <p><%= review.comment %></p>
-          <p><%= '⭐'.repeat(review.rating) %></p>
-          <p><strong>Julkaisuaika:</strong> <%= review.created %></p>
-        </div>
-        <% }); %>
-      </ul>
-      <% } %>
-    </div>
-    <div class="suosikkiresepti">
-      <h3>Suosikkireseptisi:</h3>
-      <% if (favorites.length === 0) { %>
+      <div class="arvostelu">
+        <h3>Profiilin Arvostelut:</h3>
+        <% if (reviews.length === 0) { %>
+        <p>Sinulla ei ole vielä arvosteluita.</p>
+        <% } else { %>
+        <ul>
+          <% reviews.forEach(function(review) { %>
+          <div class="review">
+            <h3><%= review.recipe_name %></h3>
+            <img
+              src="<%= review.recipe_thumb %>"
+              alt="Recipe Image"
+              style="width: 300px"
+            />
+            <p><%= review.comment %></p>
+            <p><%= '⭐'.repeat(review.rating) %></p>
+            <p><strong>Julkaisuaika:</strong> <%= review.created %></p>
+
+            <!-- Poistonappi siirretty tähän -->
+            <form action="/poista-arvostelu" method="POST">
+              <input type="hidden" name="reviewId" value="<%= review.id %>" />
+              <button
+                type="submit"
+                onclick="return confirm('Haluatko varmasti poistaa tämän arvostelun?');"
+              >
+                Poista arvostelu
+              </button>
+            </form>
+          </div>
+          <% }); %>
+        </ul>
+        <% } %>
+      </div>
+
+      <!-- Suosikkireseptit -->
+      <div class="suosikkiresepti">
+        <h3>Suosikkireseptisi:</h3>
+        <% if (favorites.length === 0) { %>
         <p>Ei suosikkireseptejä vielä.</p>
-      <% } else { %>
-        <% favorites.forEach(function(fav) { %>
+        <% } else { %>
+        <ul>
+          <% favorites.forEach(function(fav) { %>
           <div class="review">
             <h3><%= fav.recipe_name %></h3>
-            <img src="<%= fav.recipe_thumb %>" alt="Favorite Recipe Image" style="width: 300px" />
-            <p><%= fav.comment %></p>
-            <p><%= '⭐'.repeat(fav.rating) %></p>
-            <p><strong>Julkaisuaika:</strong> <%= fav.created %></p>
+            <img
+              src="<%= fav.recipe_thumb %>"
+              alt="Favorite Recipe Image"
+              style="width: 300px"
+            />
+
+            <!-- Poista suosikeista -->
+            <form action="/poista-suosikista" method="POST">
+              <input
+                type="hidden"
+                name="recipeId"
+                value="<%= fav.recipe_id %>"
+              />
+              <button
+                type="submit"
+                onclick="return confirm('Haluatko varmasti poistaa tämän suosikeista?');"
+              >
+                Poista suosikeista
+              </button>
+            </form>
           </div>
-        <% }); %>
-      <% } %>
+          <% }); %>
+        </ul>
+        <% } %>
+      </div>
     </div>
-  </div>
-</div>
   </body>
 </html>

@@ -29,6 +29,11 @@
         /><br /><br />
 
         <button type="submit">Kirjaudu sisään</button>
+
+        <% if (typeof error !== 'undefined' && error) { %>
+        <div class="error-box"><%= error %></div>
+        <% } %>
+
         <p>
           Eikö sinulla ole jo tiliä? Rekisteröidy tästä
           <a href="/register">Rekisteröidy</a>

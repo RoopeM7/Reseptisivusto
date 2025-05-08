@@ -59,11 +59,9 @@ h3 {
 
 .sisalto {
   display: flex;
+  flex-wrap: wrap; /* TÄRKEÄ */
+  gap: 20px;
   justify-content: space-between;
-  align-items: flex-start;
-  gap: 30px;
-  padding: 30px;
-  color: #333333;
 }
 
 .suosikkiresepti,
@@ -75,6 +73,7 @@ h3 {
   width: 90%;
   max-width: 600px;
   font-family: "Lato", sans-serif;
+  flex: 1 1 45%; /* TÄRKEÄ MYÖS */
 }
 
 .review img {
@@ -93,4 +92,11 @@ h3 {
 
 .review p {
   margin: 0.5rem 0;
+}
+
+@media (max-width: 768px) {
+  .arvostelu,
+  .suosikkiresepti {
+    flex: 1 1 100%; /* TÄRKEÄ tää vie koko rivin  */
+  }
 }

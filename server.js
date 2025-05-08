@@ -1,4 +1,4 @@
-import express from "express";
+import express from "express"; // MUISTA ROOPE KORJATA SUOSIKKIRESEPTI NAPPI TOIMINTO KAIKKI
 import path from "path";
 import mysql from "mysql2";
 import session from "express-session";
@@ -8,10 +8,10 @@ import { fileURLToPath } from "url";
 import fs from "fs/promises";
 const port = 3000;
 const host = "localhost";
-
+// SUPERDUPER TÄRKEÄ TÄMÄ YHDISTÄÄ TIETOKANNAN!!!!!!!!!!
 const jsonData = await fs.readFile("./dbconfig.json", "utf-8");
 const dbconfig = JSON.parse(jsonData);
-
+// YHDISTÄÄ TIETOKANNNANNN!!!!!!!!!!
 const connection = mysql.createConnection(dbconfig);
 
 const app = express();
@@ -113,7 +113,9 @@ app.post("/register", (req, res) => {
 
 // login kohta ALKAA
 app.get("/login", (req, res) => {
-  res.render("login");
+  const error = req.session.error;
+  delete req.session.error;
+  res.render("login", { error });
 });
 
 app.post("/login", (req, res) => {
@@ -123,28 +125,28 @@ app.post("/login", (req, res) => {
   connection.query(query, [identifier, identifier], async (err, results) => {
     if (err) {
       console.error("Tietokantavirhe:", err);
-      return res.status(500).send("Virhe kirjautumisessa, yritä uudelleen.");
+      req.session.error = "PALVELIN VIRHE. Yritä uudelleen.";
+      return res.redirect("/login");
     }
 
     if (results.length === 0) {
-      return res.status(400).send("VIRHEELLINEN käyttäjätunnus tai salasana");
+      req.session.error = "Virheellinen käyttäjätunnus tai salasana.";
+      return res.redirect("/login");
     }
 
     const user = results[0];
     const passwordMatch = await bcrypt.compare(password, user.password_hash);
 
     if (!passwordMatch) {
-      return res.status(400).send("VIRHEELLINEN käyttäjätunnus tai salasana");
+      req.session.error = "Virheellinen käyttäjätunnus tai salasana.";
+      return res.redirect("/login");
     }
 
     req.session.user = { id: user.id, username: user.username };
-    //debuggaus
-    console.log("User session:", req.session.user);
-    //debuggaus
     res.redirect("/index");
   });
 });
-// login kohta loppuu
+// login kohta loppuu!!
 
 //Profiili kohta alkaa!!
 app.get("/profile", async (req, res) => {
@@ -153,26 +155,36 @@ app.get("/profile", async (req, res) => {
   }
 
   try {
-    const userId = req.session.user.id; // tämä määrittää userId:n
+    const userId = req.session.user.id; // HAEMME käyttäjän ID sessionista!!
 
     const [users] = await connection
       .promise()
-      .query("SELECT id, username FROM users WHERE id = ?", [userId]); // eli tämän.
+      .query("SELECT id, username FROM users WHERE id = ?", [userId]); // HAEMME  käyttäjän tiedot!!
     const user = users[0];
-    const [rawReviews] = await connection
-      .promise()
-      .query("SELECT * FROM reviews WHERE user_id = ? ORDER BY created DESC", [
-        userId,
-      ]);
-    //Suosikki kohta reseptisivulla
-    // Hae suosikit eli arvostelut, joissa rating >= 4
-    const [rawFavorites] = await connection
-      .promise()
-      .query(
-        "SELECT * FROM reviews WHERE user_id = ? AND rating >= 4 ORDER BY created DESC",
-        [userId]
-      );
 
+    // HAEMME KÄYTTÄJÄN KAIKKI ARVOSTELUT JÄTTÄEN SUOSIKIT POIS!!
+    const [rawReviews] = await connection.promise().query(
+      `
+      SELECT * FROM reviews 
+      WHERE user_id = ? 
+        AND (rating IS NOT NULL OR comment IS NOT NULL)
+      ORDER BY created DESC
+    `,
+      [userId]
+    );
+
+    // HAKEE kaikki käyttäjän suosikit!!
+    const [rawFavorites] = await connection.promise().query(
+      `
+      SELECT * FROM reviews 
+      WHERE user_id = ? 
+        AND is_favorite = 1
+      ORDER BY created DESC
+    `,
+      [userId]
+    );
+
+    // Muodostetaan suosikkireseptit
     const favoriteReviews = await Promise.all(
       rawFavorites.map(async (review) => {
         try {
@@ -182,10 +194,16 @@ app.get("/profile", async (req, res) => {
           const data = await response.json();
           const recipe = data.meals ? data.meals[0] : null;
 
+          // Tarkistetaan onko resepti arvosteltu!!
+          const isReviewed = rawReviews.some(
+            (r) => r.recipe_id === review.recipe_id
+          );
+
           return {
             ...review,
             recipe_name: recipe ? recipe.strMeal : "Tuntematon resepti",
             recipe_thumb: recipe ? recipe.strMealThumb : "",
+            isReviewed, // katsomme onko tämä suosikki myös arvosteltu
           };
         } catch (error) {
           console.error("Error fetching favorite recipe:", error.message);
@@ -193,15 +211,13 @@ app.get("/profile", async (req, res) => {
             ...review,
             recipe_name: "Tuntematon resepti",
             recipe_thumb: "",
+            isReviewed: false,
           };
         }
       })
     );
-    const reviews = rawReviews.map((review) => ({
-      ...review,
-      recipe_name: review.recipe_name || "Tuntematon resepti",
-      recipe_thumb: review.recipe_thumb || "",
-    }));
+
+    // Muokkaa ja yhdistäää kaikki arvostelut!!
     const updatedReviews = await Promise.all(
       rawReviews.map(async (review) => {
         try {
@@ -210,13 +226,7 @@ app.get("/profile", async (req, res) => {
           );
           const data = await response.json();
           const recipe = data.meals ? data.meals[0] : null;
-          //DEBUGGAUSTA VARTEN!! ei saa poistaa!! =>
-          if (recipe) {
-            console.log("Resepti löytyi:", recipe.strMeal);
-          } else {
-            console.log("Reseptiä ei löytynyt ID:llä:", review.recipe_id);
-          }
-          //<=DEBUGGAUSTA VARTEN
+
           return {
             ...review,
             recipe_name: recipe ? recipe.strMeal : "Tuntematon resepti",
@@ -233,19 +243,22 @@ app.get("/profile", async (req, res) => {
       })
     );
 
+    // lataa profiilisuvun ja sen tiedot, arvostelut, suosikit jnejne..
     res.render("profile", {
-      users,
-      reviews: updatedReviews,
-      favorites: favoriteReviews,
+      user,
+      reviews: updatedReviews, // Käyttäjän kaikki arvostelut
+      favorites: favoriteReviews, // Käyttäjän suosikkireseptit
     });
   } catch (error) {
     console.error("Virhe profiilin luonnissa:", error);
     res.status(500).send("Jotain meni pieleen...");
   }
+
   process.on("exit", () => {
     connection.end();
   });
 });
+
 //Profiili kohta loppuu!!
 
 //kategoria kohta
@@ -263,33 +276,43 @@ app.get("/category/:categoryName", async (req, res) => {
     console.error(`VIRHE HAETTAESSA ${categoryName} reseptejä:`, error);
     res.status(500).send("API-haku EPÄONNISTUI");
   }
-});
-
+}); // kategoria kohta loppuu
+//Reseprti sivu kohta alkaa
 app.get("/reseptisivu/:id", async (req, res) => {
-  const recipeId = req.params.id;
+  const recipeId = req.params.id; // reseptinid
+  const userId = req.session.user?.id; // käyttäjän ID, jos on kirjautunut
+
   try {
     const response = await fetch(
-      `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}`
+      `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${recipeId}` // TÄMÄ HAKEE RESEPTIN APISTA!!
     );
     const data = await response.json();
-    const resepti = data.meals[0];
-    const reviewsQuery = `
-      SELECT reviews.rating, reviews.comment, users.username
-      FROM reviews
-      JOIN users ON reviews.user_id = users.id
-      WHERE reviews.recipe_id = ?
-    `;
+    const resepti = data.meals ? data.meals[0] : null; // TARKISTUS ETTÄ RESEPTI LÖYTYISI!!
 
+    if (!resepti) {
+      return res.status(404).send("Reseptiä ei löytynyt.");
+    }
+
+    // Hakees arvostelut tietokannasta
+    const reviewsQuery = `
+  SELECT reviews.rating, reviews.comment, users.username
+  FROM reviews
+  JOIN users ON reviews.user_id = users.id
+  WHERE reviews.recipe_id = ?
+    AND reviews.comment IS NOT NULL
+    AND reviews.rating IS NOT NULL
+`;
+    // Lisätty reviews.comment ja reviews.rating IS NOT NULL jotta reseptin poistaminen onnistuisi!!
     connection.query(reviewsQuery, [recipeId], (err, reviewRows) => {
       if (err) {
         console.error("Virhe arvostelujen haussa:", err);
         return res.status(500).send("Virhe arvostelujen haussa");
       }
 
+      // Tämä hakee ja tekee arvosteluiden keskiarvon!!
       const avgQuery = `
         SELECT AVG(rating) AS avgRating FROM reviews WHERE recipe_id = ?
       `;
-
       connection.query(avgQuery, [recipeId], (err, avgRows) => {
         if (err) {
           console.error("Virhe keskiarvohaussa:", err);
@@ -299,12 +322,44 @@ app.get("/reseptisivu/:id", async (req, res) => {
         const avg = avgRows[0].avgRating;
         const formattedAvg = avg ? parseFloat(avg).toFixed(1) : null;
 
-        res.render("reseptisivu", {
-          resepti,
-          reviews: reviewRows,
-          avgRating: formattedAvg,
-          user: req.session.user,
-        });
+        // Tarkistaa onko resepti jo suosikki käyttäjällä
+        let isFavorite = false;
+        if (userId) {
+          const checkFavoriteQuery = `
+            SELECT * FROM reviews WHERE user_id = ? AND recipe_id = ? AND is_favorite = 1
+          `;
+          connection.query(
+            checkFavoriteQuery,
+            [userId, recipeId],
+            (err, favoriteRows) => {
+              if (err) {
+                console.error("Virhe suosikin tarkistuksessa:", err);
+              }
+              // Jos löytyy suosikkiksi merkitty resepti, tämä laittaa is Favorite true jotta ei voi uudestaan lisää suosikiksi!!!
+              isFavorite = favoriteRows.length > 0;
+
+              // Renderöidään resepti, arvostelut ja suosikkitieto
+              res.render("reseptisivu", {
+                resepti,
+                reviews: reviewRows,
+                avgRating: formattedAvg,
+                user: req.session.user,
+                recipeId: recipeId,
+                isFavorite: isFavorite, // Lähettää tiedon, onko juuri tämä resepti jo suosikki!!
+              });
+            }
+          );
+        } else {
+          // Jos käyttäjä ei ole kirjautunut, renderöidään vain resepti ja arvostelut
+          res.render("reseptisivu", {
+            resepti,
+            reviews: reviewRows,
+            avgRating: formattedAvg,
+            user: req.session.user,
+            recipeId: recipeId,
+            isFavorite: false, // Käyttäjä ei ole kirjautunut, reseptin on mahdotonta olla suosikissa!!
+          });
+        }
       });
     });
   } catch (error) {
@@ -312,15 +367,7 @@ app.get("/reseptisivu/:id", async (req, res) => {
     res.status(500).send("API-haku epäonnistui");
   }
 });
-
-//kategoria kohta loppuu
-
-/*LOGOUT KOHTA ALKAA
-app.get("/logout", (req, res) => {
-  req.session.destroy(() => {
-    res.redirect("/register");
-  });
-}); */ // LOGOUT KOHTA LOPPUU
+//resepti sivu kohta loppuu
 
 // haku kohta alkaa
 app.get("/search", async (req, res) => {
@@ -369,23 +416,46 @@ app.post("/review", (req, res) => {
     return res.status(400).send("Arvion täytyy olla välillä 1–5 tähteä.");
   }
 
-  const insertQuery = `
-    INSERT INTO reviews (user_id, recipe_id, rating, comment)
-    VALUES (?, ?, ?, ?)
+  // Tarkista onko kÄYTTÄJÄ JO arvosteelllut juuri tämän reseptinn
+  const checkReviewQuery = `
+    SELECT * FROM reviews
+    WHERE user_id = ? AND recipe_id = ? AND (rating IS NOT NULL OR comment IS NOT NULL)
   `;
 
   connection.query(
-    insertQuery,
-    [userId, mealId, parsedRating, comment],
-    (err, result) => {
+    checkReviewQuery,
+    [userId, mealId],
+    (err, existingReview) => {
       if (err) {
-        console.error("Virhe arvostelua tallentaessa:", err);
-        return res.status(500).send("Virhe arvostelua tallentaessa.");
+        console.error("Virhe tarkistettaessa arvostelua:", err);
+        return res.status(500).send("Virhe tarkistettaessa arvostelua.");
       }
 
-      console.log("Arvostelu tallennettu käyttäjältä:", userId);
+      if (existingReview.length > 0) {
+        return res.status(400).send("Olet jo arvostellut tämän reseptin.");
+      }
 
-      res.redirect(`/reseptisivu/${mealId}`);
+      // Jos ei ole arvosteltu, tulee/lisää uuden arvostelun!
+      const insertQuery = `
+      INSERT INTO reviews (user_id, recipe_id, rating, comment)
+      VALUES (?, ?, ?, ?)
+    `;
+
+      connection.query(
+        insertQuery,
+        [userId, mealId, parsedRating, comment],
+        (err, result) => {
+          if (err) {
+            console.error("Virhe arvostelua tallentaessa:", err);
+            return res.status(500).send("Virhe arvostelua tallentaessa.");
+          }
+
+          console.log("Arvostelu tallennettu käyttäjältä:", userId);
+
+          // Ohjaa takaisin reseptisivull
+          res.redirect(`/reseptisivu/${mealId}`);
+        }
+      );
     }
   );
 });
@@ -417,6 +487,83 @@ app.get("/reviews/:mealId", (req, res) => {
   });
 });
 //ARVOSTELUJEN MAHDOLLISTAMINEN/LISÄÄMINEN LOPPUU TÄHÄN!!
+
+// tästä alkaa suosikkireseptin lisääminen Profiiliin!!
+app.post("/lisaa-suosikiksi", async (req, res) => {
+  const userId = req.session.user.id;
+  const recipeId = req.body.recipeId;
+
+  try {
+    // TARKASTAA, ONKO KÄYTTÄJÄ ARVOSTELLUT RESEPTIN
+    const [existingReview] = await connection
+      .promise()
+      .query("SELECT * FROM reviews WHERE user_id = ? AND recipe_id = ?", [
+        userId,
+        recipeId,
+      ]);
+
+    if (existingReview.length === 0) {
+      // Jos arvostelua ei ole, luodaan uusi arvostelu
+      await connection.promise().query(
+        "INSERT INTO reviews (user_id, recipe_id, is_favorite) VALUES (?, ?, ?)",
+        [userId, recipeId, 1] // MERKITÄÄN TÄMÄ RESEPTI SUOSIKIKSI
+      );
+    } else {
+      // Jos arvostelu on jo olemassa päivitetään se suosikiksi
+      await connection
+        .promise()
+        .query(
+          "UPDATE reviews SET is_favorite = 1 WHERE user_id = ? AND recipe_id = ?",
+          [userId, recipeId]
+        );
+    }
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Virhe suosikin lisäämisessä:", error);
+    res.status(500).send("Suosikkia ei voitu lisätä.");
+  }
+});
+
+// tähän loppuu suosikkireseptin lisääminen Profiiliin!!
+
+// TÄSTÄ ALKAA suosikki reseptin poistaminen!!!
+app.post("/poista-suosikista", async (req, res) => {
+  const { recipeId } = req.body;
+  const userId = req.session.user.id;
+
+  try {
+    // Päivittää `is_favorite` kenttän jotta se ei enää näy profiili sivulla!!
+    await connection
+      .promise()
+      .query(
+        "UPDATE reviews SET is_favorite = 0 WHERE user_id = ? AND recipe_id = ?",
+        [userId, recipeId]
+      );
+
+    res.redirect("/profile"); // Siirtää meidät takaisin profiilisivulle
+  } catch (error) {
+    console.error("Virhe suosikin poistossa:", error);
+    res.status(500).send("Suosikin poistaminen epäonnistui.");
+  }
+});
+// TÄHÄN LOPPUU suosikin poistaminen!!!!
+
+// Arvostelun poistaminen funktio kohta!!!
+app.post("/poista-arvostelu", async (req, res) => {
+  const { reviewId } = req.body;
+  try {
+    await connection
+      .promise()
+      .query(`UPDATE reviews SET rating = NULL, comment = NULL WHERE id = ?`, [
+        reviewId,
+      ]);
+    res.redirect("/profile");
+  } catch (error) {
+    console.error("Virhe arvostelun poistossa:", error);
+    res.status(500).send("Arvostelua ei voitu poistaa.");
+  }
+});
+// Arvostelun poistamis funktio kohta loppuu!!!
 
 //loppuuu koko js tähän..
 app.listen(port, host, () => {
