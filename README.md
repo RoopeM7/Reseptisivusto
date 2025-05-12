@@ -5,4 +5,4 @@ reseptisivusto
 Projektin aiheena on reseptisivusto
 
 ### Projektin Jäsenet:
-Projektin jäseneinä ovat: RM Ja DI
+Projektin jäseninä olivat: Roope Myllymäki Ja Daniel Iljin
